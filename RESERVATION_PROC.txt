@@ -1,0 +1,38 @@
+CREATE OR REPLACE PROCEDURE SEARCH_RESERVATION 
+(
+    P_M_ID      IN VARCHAR2,
+    P_R_NUM       IN NUMBER,
+    P_R_DATE        IN NUMBER,
+    P_CLASS       IN VARCHAR2
+)
+AS 
+     P_R_IDX NUMBER := 0;
+     P_R_COUNT NUMBER := 0;
+     
+BEGIN
+
+      -- 예약 가능 조회
+      SELECT COUNT(*)
+        INTO P_R_COUNT
+        FROM RESERVATION
+        WHERE R_NUM = P_R_NUM 
+        AND R_DATE = P_R_DATE;
+      
+      -- 가능하면 INSERT
+      IF P_R_COUNT = 0 THEN
+        
+        SELECT SEQ_1.NEXTVAL
+            INTO P_R_IDX
+            FROM DUAL;
+        
+        INSERT INTO RESERVATION(R_IDX, M_ID, R_NUM, R_DATE, CLASS)
+            VALUES(P_R_IDX,P_M_ID, P_R_NUM, P_R_DATE, P_CLASS);
+            
+        DBMS_OUTPUT.PUT_LINE('예약이 완료되었습니다.');
+        COMMIT;
+      ELSE 
+        DBMS_OUTPUT.PUT_LINE('이미 예약이 완료된 객실입니다.');
+        ROLLBACK;
+    
+      END IF;
+END SEARCH_RESERVATION;

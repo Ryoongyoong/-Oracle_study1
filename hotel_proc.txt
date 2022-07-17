@@ -1,0 +1,15 @@
+create or replace NONEDITIONABLE PROCEDURE ORDER_ROOM 
+(
+    ORDER_M_ID       IN         VARCHAR2,  
+    ORDER_R_NUM      IN         NUMBER,        
+    ORDER_MENU       IN         VARCHAR2,           
+    ORDER_F_PRICE    IN         NUMBER                 
+
+)
+AS 
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('주문이 완료되었습니다.');
+    INSERT INTO ROOM_SERVICE(M_ID, R_NUM, MENU, F_PRICE) 
+    VALUES(ORDER_M_ID, ORDER_R_NUM, ORDER_MENU, ORDER_F_PRICE);
+    
+END ORDER_ROOM;
